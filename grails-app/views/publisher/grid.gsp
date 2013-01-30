@@ -6,7 +6,7 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'publisher.label', default: 'Publisher')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
-		<link rel="stylesheet" type="text/css" media="screen" href="${resource(dir: '/jquery-ui-1.8.23/css/mint-choc', file: 'jquery-ui-1.8.23.custom.css')}" />
+		<link rel="stylesheet" type="text/css" media="screen" href="${resource(dir: '/jquery-ui-1.8.23/css/le-frog', file: 'jquery-ui-1.8.23.custom.css')}" />
 		<link rel="stylesheet" type="text/css" media="screen" href="${resource(dir: '/jqGrid-4.4.1/css', file: 'ui.jqgrid.css')}" />
  
  		<script type="text/javascript" src="${resource(dir: '/jqGrid-4.4.1/js/', file: 'jquery-1.7.2.min.js')}"></script>
@@ -64,7 +64,7 @@
 				subGridModel: [
 					{
 						name : ['Title', 'Subtitle', 'PublishDate', 'Pages', 'Description'],
-						width : [100, 100, 100, 30, 200],
+						width : [100, 100, 125, 30, 200],
 						mapping : ['title', 'subtitle', 'publishDate', 'pages', 'description'],
 						params: ['id']
 					} 
@@ -87,7 +87,4 @@
 			<div id="pager"></div> 
 		</div>
 	</body>
-	
-
-
 </html>
