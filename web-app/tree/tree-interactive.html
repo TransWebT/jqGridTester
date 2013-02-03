@@ -322,10 +322,32 @@
 
     // @@@ to hack
     function paste(pasteNode, clipboard) {
-        if (clipboard) {
-            pasteNode.children[pasteNode.children.length] = clipboard;
-            update(parent);
+        if (!clipboard || !pasteNode) {
+            return;
         }
+        var pasteNodeChildren;
+        if (pasteNode._children) {
+            pasteNodeChildren = pasteNode._children;
+        } else {
+            if (!pasteNode.children) {
+                pasteNode.children = new Array();
+            }
+            pasteNodeChildren = pasteNode.children;
+        }
+        pasteNodeChildren[pasteNodeChildren.length] = clipboard.cutNode;
+        var cutNodeParent = clipboard.cutNode.parent;
+        for (var cutNodePos=0; cutNodePos < cutNodeParent.children.length; cutNodePos++) {
+            if (cutNodeParent.children[cutNodePos].id == clipboard.cutNode.id) break;
+        }
+        cutNodeParent.children.splice(cutNodePos,1);
+
+        clipboard.cutNode.parent = pasteNode;
+
+        update(cutNodeParent);
+        if (cutNodeParent.id != pasteNode.parent.id) {
+            update(pasteNode.parent);
+        }
+        clipboard.cutNode = null;
     }
 
     function edit(d) {
