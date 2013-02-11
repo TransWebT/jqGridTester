@@ -304,23 +304,12 @@
                     }
                 });
 
-                // clipboard = parent.children.slice(i,i+1);
-                // $.extend(true, {}, clipboard.cutNode, child);
-
-                // var childAsJSON = $.toJSON( child );
-                // clipboard = $.evalJSON( childAsJSON );
-
-                // parent.children.splice(i,1);
-                // clipboard = $.extend(true, {}, parent.children[i]);
-                // delete parent.children[i];
-                // update(parent);
                 update(root);  // @@@ this is just to test the cut/paste experiment
                 return;
             }
         }
     }
 
-    // @@@ to hack
     function paste(pasteNode, clipboard) {
         if (!clipboard || !pasteNode) {
             return;
@@ -354,6 +343,9 @@
 
     }
 
+    function addChildren(parentNode) {
+
+    }
 
     $(function(){
         $.contextMenu({
@@ -362,6 +354,7 @@
                 var thisNode = this[0].__data__;
                 switch (key) {
                     case "addchildren":
+                        addChildren(thisNode);
                         alert("add children to this node.");
                         break;
                     case "edit":
@@ -369,14 +362,14 @@
                         break;
                     case "cut":
                         cut(thisNode, clipboard);
-                        alert("cut branch at this node.")
+                        // alert("cut branch at this node.")
                         break;
                     case "copy":
                         alert("copy branch from this node.")
                         break;
                     case "paste":
                         paste(thisNode, clipboard);
-                        alert("paste branch on clipboard to this node.")
+                        // alert("paste branch on clipboard to this node.")
                         break;
                     case "delete":
                         alert("delete branch from this node.")
@@ -394,7 +387,27 @@
                 // window.console && console.log(m) || alert(m);
             },
             items: {
-                "addchildren": {name: "Add Children", icon: "edit"},
+                "addsubmenu": {
+                    name: "Quick Add Child Nodes",
+                    icon: "edit",
+                    items: {
+                        "addchildren": {"name": "Add Nodes - one per line",
+                                        type: 'textarea',
+                                        value: "Hello World",
+                                        height: 100,
+                                        width: 400
+                        },
+                        sepsubmit: "---------",
+                        key: {
+                            name: "Create Nodes",
+                            callback: function(key, options) {
+                                var myData = $.contextMenu.getInputValues(options, this.data());
+                                var m = "edit was clicked" + myData.addchildren;
+                                window.console && console.log(m) || alert(myData.addchildren);
+                            }
+                        }
+                    }
+                },
                 "sep1": "---------",
                 "edit": {name: "Edit", icon: "edit"},
                 "cut": {name: "Cut", icon: "cut"},
