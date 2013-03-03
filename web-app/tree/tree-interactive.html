@@ -319,7 +319,7 @@
             pasteNodeChildren = pasteNode._children;
         } else {
             if (!pasteNode.children) {
-                pasteNode.children = new Array();
+                        pasteNode.children = new Array();
             }
             pasteNodeChildren = pasteNode.children;
         }
@@ -343,8 +343,26 @@
 
     }
 
-    function addChildren(parentNode) {
-
+    function addChildren(parentNode, nodeData) {
+        if (!parentNode) {
+            return;
+        }
+        var parentNodeChildren, newNode;
+        if (parentNode._children) {
+            parentNodeChildren = parentNode._children;
+        } else {
+            if (!parentNode.children) {
+                parentNode.children = new Array();
+            }
+            parentNodeChildren = parentNode.children;
+        }
+        var newNodeList = nodeData.match(/[^\r\n]+/g);
+        newNodeList.forEach(function (d) {
+            newNode = new Object({"name": d, "size": 3416}); // @@@ what to use for size?
+            parentNodeChildren[parentNodeChildren.length] = newNode;
+        });
+        // parentNodeChildren[parentNodeChildren.length] = newNode;
+        update(parentNode);
     }
 
     $(function(){
@@ -401,8 +419,10 @@
                         key: {
                             name: "Create Nodes",
                             callback: function(key, options) {
+                                var thisNode = this[0].__data__;
                                 var myData = $.contextMenu.getInputValues(options, this.data());
                                 var m = "edit was clicked" + myData.addchildren;
+                                addChildren(thisNode, myData.addchildren);
                                 window.console && console.log(m) || alert(myData.addchildren);
                             }
                         }
