@@ -79,6 +79,7 @@
     });
 
     var clipboard = {};
+    var undoBuffer = {};
 
     function update(source) {
         // Compute the new tree layout.
@@ -343,6 +344,24 @@
 
     }
 
+    function deleteNode(nodeToDelete) {
+        if (!nodeToDelete) {
+            return;
+        }
+        var nodeToDeleteParent = nodeToDelete.parent;
+        for (var nodeToDeletePos=0; nodeToDeletePos < nodeToDeleteParent.children.length; nodeToDeletePos++) {
+            if (nodeToDeleteParent.children[nodeToDeletePos].id == nodeToDelete.id) break;
+        }
+        nodeToDeleteParent.children.splice(nodeToDeletePos,1);
+
+        update(nodeToDeleteParent);
+    }
+
+    function edit(d) {
+
+    }
+
+
     function addChildren(parentNode, nodeData) {
         if (!parentNode) {
             return;
@@ -390,6 +409,7 @@
                         // alert("paste branch on clipboard to this node.")
                         break;
                     case "delete":
+                        deleteNode(thisNode);
                         alert("delete branch from this node.")
                         break;
                     case "collapse":
